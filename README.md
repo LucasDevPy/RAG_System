@@ -9,7 +9,7 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) API that allows users t
 
 ## 🏗️ Architecture
 
-```mermaid
+mermaid
 graph TD
     A[User Uploads PDF] --> B(FastAPI Endpoint)
     B --> C{PDF Processor}
