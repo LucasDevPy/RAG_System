@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  rag-api:
+    build: .
+    container_name: rag_pdf_chat
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount local directories to the container for data persistence
+      - ./uploads:/app/uploads
+      - ./chroma_db:/app/chroma_db
+    env_file:
+      - .env
+    restart: unless-stopped

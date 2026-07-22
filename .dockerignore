@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Project specific
+uploads/
+chroma_db/
+pytest_cache/
+.pytest_cache/
