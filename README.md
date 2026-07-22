@@ -9,7 +9,7 @@ An enterprise-grade Retrieval-Augmented Generation (RAG) API that allows users t
 
 ## 🏗️ Architecture
 
-mermaid
+```mermaid
 graph TD
     A[User Uploads PDF] --> B(FastAPI Endpoint)
     B --> C{PDF Processor}
@@ -19,7 +19,7 @@ graph TD
     F -->|Re-rank| G[Flashrank Local Model]
     G -->|Top Context| H[OpenAI LLM]
     H -->|Answer + Citations| I[User]
-
+````
 ## 🚀 Features
 ** Multi-PDF Support: Upload and query across multiple documents simultaneously.
 ** Smart Chunking: Recursive character splitting with overlap for optimal context preservation.
