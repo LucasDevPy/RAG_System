@@ -1,10 +1,4 @@
 # 📄 RAG PDF Chat System
-
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688)
-![LangGraph](https://img.shields.io/badge/LangGraph-Stateful_AI-FF4B4B)
-[![Python CI](https://github.com/LucasDevPy/RAG_System/actions/workflows/test.yml/badge.svg)](https://github.com/LucasDevPy/RAG_System/actions/workflows/test.yml)
-
 An enterprise-grade Retrieval-Augmented Generation (RAG) API that allows users to upload multiple PDFs and chat with them contextually. Built with **FastAPI**, **LangGraph**, and **ChromaDB**, featuring smart chunking, context re-ranking, and source citation tracking.
 
 ## 🏗️ Architecture
