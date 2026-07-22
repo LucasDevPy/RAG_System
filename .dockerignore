@@ -1,16 +1,51 @@
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.so
 *.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual Environment
 .venv/
+venv/
+
+# Environment & Secrets (NEVER put in Docker!)
 .env
+.env.local
+*.env
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# Project specific
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+tox/
+.pytest_cache/
+tests/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# Documentation
+*.md
+!requirements.txt
+LICENSE
+
+# Project specific (generated data)
 uploads/
 chroma_db/
-pytest_cache/
-.pytest_cache/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
