@@ -17,8 +17,9 @@ def test_upload_invalid_file():
     assert response.status_code == 400
     assert response.json()["detail"] == "Only PDF files are allowed."
 
+# FIX: Patch where the functions are USED, not where they are defined
 @patch('app.graph.rag_graph.ChatOpenAI')
-@patch('app.services.vector_store.get_vector_store')
+@patch('app.services.retriever.get_vector_store')
 def test_chat_endpoint_structure(mock_get_store, mock_chat_openai):
     """Tests the chat endpoint returns the correct schema (mocked for CI)."""
     
