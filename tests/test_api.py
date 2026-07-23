@@ -17,10 +17,10 @@ def test_upload_invalid_file():
     assert response.status_code == 400
     assert response.json()["detail"] == "Only PDF files are allowed."
 
-# FIX: Patch where the functions are USED, not where they are defined
+# Mock the classes exactly where they are imported and used in our app
 @patch('app.graph.rag_graph.ChatOpenAI')
 @patch('app.services.retriever.get_vector_store')
-def test_chat_endpoint_structure(mock_get_store, mock_chat_openai):
+def test_chat_endpoint_structure(mock_get_vector_store, mock_chat_openai_class):
     """Tests the chat endpoint returns the correct schema (mocked for CI)."""
     
     # 1. Mock the vector store to return dummy documents
@@ -29,13 +29,15 @@ def test_chat_endpoint_structure(mock_get_store, mock_chat_openai):
     mock_doc.page_content = "Dummy context for testing."
     mock_doc.metadata = {"source": "test_document.pdf"}
     mock_store.similarity_search.return_value = [mock_doc]
-    mock_get_store.return_value = mock_store
-    
-    # 2. Mock the LLM response
+    mock_get_vector_store.return_value = mock_store
+
+    # 2. Mock the ChatOpenAI class and its invoke method
     mock_llm_instance = MagicMock()
-    mock_llm_instance.content = "This is a mocked test answer."
-    mock_chat_openai.return_value.invoke.return_value = mock_llm_instance
-    
+    mock_response = MagicMock()
+    mock_response.content = "This is a mocked test answer."
+    mock_llm_instance.invoke.return_value = mock_response
+    mock_chat_openai_class.return_value = mock_llm_instance
+
     # 3. Send the request
     payload = {"question": "What is this document about?", "thread_id": "test_1"}
     response = client.post("/chat", json=payload)

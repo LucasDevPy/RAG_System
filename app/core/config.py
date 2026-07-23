@@ -2,8 +2,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
-    # Dummy default prevents LangChain validation errors during CI imports
-    openai_api_key: str = "sk-dummy-key-for-testing" 
+    # Safe dummy default prevents validation errors during CI imports
+    openai_api_key: str = "sk-dummy-key-for-testing-purposes-only"
     openai_model: str = "gpt-4o-mini"
     embedding_model: str = "text-embedding-3-small"
     chunk_size: int = 1000
