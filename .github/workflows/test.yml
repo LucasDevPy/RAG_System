@@ -2,9 +2,9 @@ name: Python CI
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]  # ← Only master for now
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -24,5 +24,7 @@ jobs:
         pip install -r requirements.txt
         
     - name: Test with pytest
+      env:
+        OPENAI_API_KEY: sk-test-dummy-key-for-ci
       run: |
         pytest -v
