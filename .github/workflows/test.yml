@@ -24,5 +24,7 @@ jobs:
         pip install -r requirements.txt
         
     - name: Test with pytest
+      env:
+        OPENAI_API_KEY: sk-test-dummy-key-for-ci
       run: |
         pytest -v
