@@ -1,5 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
+from unittest.mock import patch, MagicMock
 from app.main import app
 
 client = TestClient(app)
@@ -12,15 +13,29 @@ def test_health_check():
 
 def test_upload_invalid_file():
     """Tests that non-PDF files are rejected."""
-    response = client.post("/upload", files={"file": ("Atest.txt", b"dummy content", "text/plain")})
+    response = client.post("/upload", files={"file": ("test.txt", b"dummy content", "text/plain")})
     assert response.status_code == 400
     assert response.json()["detail"] == "Only PDF files are allowed."
 
-def test_chat_endpoint_structure():
+@patch('langchain_openai.ChatOpenAI.invoke')
+@patch('app.services.vector_store.get_vector_store')
+def test_chat_endpoint_structure(mock_get_store, mock_llm_invoke):
     """Tests the chat endpoint returns the correct schema (mocked for CI)."""
-    # Note: In a real CI environment, you would mock the OpenAI/Chroma calls.
-    # For local testing, this verifies the Pydantic response model.
+    # 1. Mock the Vector Store so it doesn't try to connect to ChromaDB/OpenAI
+    mock_store = MagicMock()
+    mock_get_store.return_value = mock_store
+    
+    # 2. Mock the LLM response
+    mock_response = MagicMock()
+    mock_response.content = "This is a mocked test answer."
+    mock_llm_invoke.return_value = mock_response
+    
+    # 3. Send the request
     payload = {"question": "What is this document about?", "thread_id": "test_1"}
-    # We expect a 500 or 422 here if OpenAI key is missing, which is expected in CI without secrets
     response = client.post("/chat", json=payload)
-    assert response.status_code in [200, 401, 422, 500] 
+    
+    # 4. Verify the response structure
+    assert response.status_code == 200
+    data = response.json()
+    assert "answer" in data
+    assert "citations" in data
