@@ -12,7 +12,7 @@ def test_health_check():
 
 def test_upload_invalid_file():
     """Tests that non-PDF files are rejected."""
-    response = client.post("/upload", files={"file": ("test.txt", b"dummy content", "text/plain")})
+    response = client.post("/upload", files={"file": ("Atest.txt", b"dummy content", "text/plain")})
     assert response.status_code == 400
     assert response.json()["detail"] == "Only PDF files are allowed."
 
