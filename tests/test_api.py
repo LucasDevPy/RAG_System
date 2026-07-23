@@ -17,18 +17,23 @@ def test_upload_invalid_file():
     assert response.status_code == 400
     assert response.json()["detail"] == "Only PDF files are allowed."
 
-@patch('langchain_openai.ChatOpenAI.invoke')
+@patch('app.graph.rag_graph.ChatOpenAI')
 @patch('app.services.vector_store.get_vector_store')
-def test_chat_endpoint_structure(mock_get_store, mock_llm_invoke):
+def test_chat_endpoint_structure(mock_get_store, mock_chat_openai):
     """Tests the chat endpoint returns the correct schema (mocked for CI)."""
-    # 1. Mock the Vector Store so it doesn't try to connect to ChromaDB/OpenAI
+    
+    # 1. Mock the vector store to return dummy documents
     mock_store = MagicMock()
+    mock_doc = MagicMock()
+    mock_doc.page_content = "Dummy context for testing."
+    mock_doc.metadata = {"source": "test_document.pdf"}
+    mock_store.similarity_search.return_value = [mock_doc]
     mock_get_store.return_value = mock_store
     
     # 2. Mock the LLM response
-    mock_response = MagicMock()
-    mock_response.content = "This is a mocked test answer."
-    mock_llm_invoke.return_value = mock_response
+    mock_llm_instance = MagicMock()
+    mock_llm_instance.content = "This is a mocked test answer."
+    mock_chat_openai.return_value.invoke.return_value = mock_llm_instance
     
     # 3. Send the request
     payload = {"question": "What is this document about?", "thread_id": "test_1"}
@@ -39,3 +44,4 @@ def test_chat_endpoint_structure(mock_get_store, mock_llm_invoke):
     data = response.json()
     assert "answer" in data
     assert "citations" in data
+    assert data["answer"] == "This is a mocked test answer."

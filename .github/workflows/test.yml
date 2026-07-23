@@ -23,10 +23,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
-    # THIS IS THE FIX: Inject a dummy key for CI validation
-    - name: Set dummy OpenAI API key for tests
-      run: echo "OPENAI_API_KEY=sk-test-dummy-key-for-ci" >> $GITHUB_ENV
-      
     - name: Test with pytest
+      env:
+        OPENAI_API_KEY: sk-test-dummy-key-for-ci
       run: |
         pytest -v
